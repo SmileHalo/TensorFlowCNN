@@ -54,10 +54,6 @@ b_fc2 = bias_variable([10],name='b_fc2')
 
 y_conv = tf.nn.softmax(tf.matmul(h_fc1_drop, W_fc2) + b_fc2,name='y_conv')
 
-#cross_entropy = -tf.reduce_sum(y_ * tf.log(y_conv))
-#train_step = tf.train.AdamOptimizer(1e-4).minimize(cross_entropy)
-#correct_prediction = tf.equal(tf.argmax(y_conv,1), tf.argmax(y_,1))
-#accuracy = tf.reduce_mean(tf.cast(correct_prediction, "float"))
 with tf.name_scope('loss'):
     cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(labels=y_, logits=y_conv))
     tf.summary.scalar("cross_entropy", cross_entropy)
@@ -70,7 +66,6 @@ with tf.name_scope('accuracy'):
     tf.summary.scalar("accuracy", accuracy)
 
 sess = tf.Session()
-#sess.run(tf.initialize_all_variables())
 saver = tf.train.Saver()
 
 def crop_images(images):
@@ -80,8 +75,6 @@ def crop_images(images):
          for img in imgs:
             cropedImages.append(img)
      return cropedImages
-#print("test accuracy {accuracy}".format(accuracy=accuracy.eval(feed_dict={
-#    x: mnist.test.images, y_: mnist.test.labels, keep_prob: 1.0})))
 def tensorFlowTest():
     sess.run(tf.global_variables_initializer())
     saver.restore(sess, r".\net\sess.ckpt") #读取
